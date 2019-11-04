@@ -3,12 +3,6 @@ require('dotenv').config();
 //const mnemonic = process.env.MNENOMIC;
 const HDWalletProvider = require("truffle-hdwallet-provider");
 
-// Create your own key for Production environments (https://infura.io/)
-const INFURA_API_KEY = process.env.INFURA_API_KEY;
-
-//Provide your SKALE endpoint address
-const skale = process.env.SKALE_CHAIN_TRUFFLE;
-
 
 module.exports = {
   // See <http://truffleframework.com/docs/advanced/configuration>
@@ -22,7 +16,6 @@ module.exports = {
     },
     ropsten: {
       provider: function() {
-        //return new HDWalletProvider(process.env.MNENOMIC, 'https://ropsten.infura.io/v3/' + process.env.INFURA_API_KEY)
         return new HDWalletProvider(process.env.MNEMONIC, process.env.RPC_URL)
       },
       network_id: '3',
@@ -53,7 +46,7 @@ module.exports = {
       gasPrice: 10000000000
     },
     skale: {
-        provider: () => new HDWalletProvider(process.env.PRIVATE_KEY, skale),
+        provider: () => new HDWalletProvider(process.env.PRIVATE_KEY, process.env.SKALE_CHAIN_TRUFFLE),
         gasPrice: 0,
         network_id: "*"
     }
