@@ -2,18 +2,24 @@ pragma solidity ^0.5.0;
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
-import "../tokens/MintableERC20.sol";
-import "../../flashloan/base/FlashLoanReceiverBase.sol";
-import "../../configuration/LendingPoolAddressesProvider.sol";
-import "../../configuration/NetworkMetadataProvider.sol";
+import "./aave-protocol/contracts/mocks/tokens/MintableERC20.sol";
+//import "../tokens/MintableERC20.sol";
+import "./aave-protocol/contracts/flashloan/base/FlashLoanReceiverBase.sol";
+//import "../../flashloan/base/FlashLoanReceiverBase.sol";
+import "./aave-protocol/contracts/configuration/LendingPoolAddressesProvider.sol";
+//import "../../configuration/LendingPoolAddressesProvider.sol";
+import "./aave-protocol/contracts/configuration/NetworkMetadataProvider.sol";
+//import "../../configuration/NetworkMetadataProvider.sol";
+
 
 contract FlashLoanReceiverExample is FlashLoanReceiverBase {
 
     using SafeMath for uint256;
 
 
-    constructor(LendingPoolAddressesProvider _provider) FlashLoanReceiverBase(_provider)
-        public {}
+    constructor(LendingPoolAddressesProvider _provider) FlashLoanReceiverBase(_provider) public {
+        // Notihing
+    }
 
 
     function executeOperation(

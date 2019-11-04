@@ -1,12 +1,12 @@
 pragma solidity >=0.4.22 <0.6.0;
 
-import "./openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./storage/PhStorage.sol";
 import "./modifiers/PhOwnable.sol";
 
-import './openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol';
-import './openzeppelin-solidity/contracts/ownership/Ownable.sol';
-import './openzeppelin-solidity/contracts/payment/PullPayment.sol';
+import 'openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol';
+import 'openzeppelin-solidity/contracts/ownership/Ownable.sol';
+import 'openzeppelin-solidity/contracts/payment/PullPayment.sol';
 
 //import './openzeppelin-solidity/contracts/token/ERC20/ERC20.sol';
 
