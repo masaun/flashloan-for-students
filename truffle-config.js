@@ -1,4 +1,3 @@
-const path = require("path");
 require('dotenv').config();
 
 //const mnemonic = process.env.MNENOMIC;
@@ -23,7 +22,8 @@ module.exports = {
     },
     ropsten: {
       provider: function() {
-        return new HDWalletProvider(process.env.MNENOMIC, 'https://ropsten.infura.io/v3/' + process.env.INFURA_API_KEY)
+        //return new HDWalletProvider(process.env.MNENOMIC, 'https://ropsten.infura.io/v3/' + process.env.INFURA_API_KEY)
+        return new HDWalletProvider(process.env.MNEMONIC, process.env.RPC_URL)
       },
       network_id: '3',
       gas: 4465030,
