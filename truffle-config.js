@@ -14,6 +14,15 @@ module.exports = {
       //port: 8545,   // Ganache-CLI
       network_id: "*",
     },
+    kovan: {
+      provider: function() {
+        return new HDWalletProvider(process.env.MNEMONIC, process.env.RPC_URL_KOVAN)
+        //return new HDWalletProvider("Put your Mnemonic word in here", process.env.RPC_URL_KOVAN)  // If Mnemonic is not recognized, you put your Mnemonic word directly. 
+      },
+      network_id: '42',
+      gas: 4465030,
+      gasPrice: 10000000000,
+    },
     ropsten: {
       provider: function() {
         return new HDWalletProvider(process.env.MNEMONIC, process.env.RPC_URL_ROPSTEN)
@@ -22,18 +31,9 @@ module.exports = {
       gas: 4465030,
       gasPrice: 10000000000,
     },
-    kovan: {
-      provider: function() {
-        return new HDWalletProvider(process.env.MNENOMIC, process.env.RPC_URL_KOVAN)
-      },
-      network_id: '42',
-      gas: 4465030,
-      gasPrice: 10000000000,
-    },
-
     rinkeby: {
       provider: function() {
-        return new HDWalletProvider(process.env.MNENOMIC, process.env.RPC_URL);
+        return new HDWalletProvider(process.env.MNENOMIC, process.env.RPC_URL_RINKEBY);
       },
       network_id: '4',
       gas: 3000000,
