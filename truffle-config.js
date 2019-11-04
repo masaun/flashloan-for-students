@@ -16,7 +16,7 @@ module.exports = {
     },
     ropsten: {
       provider: function() {
-        return new HDWalletProvider(process.env.MNEMONIC, process.env.RPC_URL)
+        return new HDWalletProvider(process.env.MNEMONIC, process.env.RPC_URL_ROPSTEN)
       },
       network_id: '3',
       gas: 4465030,
@@ -24,7 +24,7 @@ module.exports = {
     },
     kovan: {
       provider: function() {
-        return new HDWalletProvider(process.env.MNENOMIC, process.env.RPC_URL)
+        return new HDWalletProvider(process.env.MNENOMIC, process.env.RPC_URL_KOVAN)
       },
       network_id: '42',
       gas: 4465030,
