@@ -4,7 +4,6 @@ import Header from "./components/Header/index.js";
 import Footer from "./components/Footer/index.js";
 import Hero from "./components/Hero/index.js";
 import Web3Info from "./components/Web3Info/index.js";
-import ipfs from './components/ipfs/ipfsApi.js'
 
 import { Loader, Button, Card, Input, Heading, Table, Form, Flex, Box, Image } from 'rimble-ui';
 import { zeppelinSolidityHotLoaderOptions } from '../config/webpack';
@@ -24,10 +23,6 @@ class App extends Component {
       accounts: null,
       route: window.location.pathname.replace("/", ""),
 
-      /////// Ipfs Upload
-      buffer: null,
-      ipfsHash: '',
-
       /////// NFT
       photo_marketplace: null, // Instance of contract
       totalSupply: 0,
@@ -39,10 +34,6 @@ class App extends Component {
 
     this.getTestData = this.getTestData.bind(this);
     this.addReputation = this.addReputation.bind(this);
-
-    /////// Ipfs Upload
-    this.captureFile = this.captureFile.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
   }
 
 
@@ -78,64 +69,6 @@ class App extends Component {
     const response_1 = await photo_marketplace.methods.testFunc().send({ from: accounts[0] })
     console.log('=== response of testFunc function ===', response_1);      // Debug   
   }
-
-
-  ///////--------------------- Functions of ipfsUpload ---------------------------  
-  captureFile(event) {
-    event.preventDefault()
-    const file = event.target.files[0]
-    
-    const reader = new window.FileReader()
-    reader.readAsArrayBuffer(file)  // Read bufffered file
-
-    // Callback
-    reader.onloadend = () => {
-      this.setState({ buffer: Buffer(reader.result) })
-      console.log('=== buffer ===', this.state.buffer)
-    }
-  }
-  
-  onSubmit(event) {
-    const { accounts, photo_marketplace, web3 } = this.state;
-
-    event.preventDefault()
-
-    ipfs.files.add(this.state.buffer, (error, result) => {
-      // In case of fail to upload to IPFS
-      if (error) {
-        console.error(error)
-        return
-      }
-
-      // In case of successful to upload to IPFS
-      this.setState({ ipfsHash: result[0].hash })
-      console.log('=== ipfsHash ===', this.state.ipfsHash)
-
-      const color = this.state.ipfsHash
-
-      // Append to array of NFT
-      this.state.photo_marketplace.methods.mint(color).send({ from: accounts[0] })
-      .once('receipt', (recipt) => {
-        this.setState({
-          colors: [...this.state.colors, color]
-        })
-
-        console.log('=== recipt ===', recipt);
-        console.log('=== recipt.events.Transfer.returnValues.tokenId ===', recipt.events.Transfer.returnValues.tokenId);
-        console.log('=== recipt.events.Transfer.returnValues.to ===', recipt.events.Transfer.returnValues.to);
-
-        let tokenId = recipt.events.Transfer.returnValues.tokenId
-        let ownerAddr = recipt.events.Transfer.returnValues.to
-        let reputationCount = 0
-        this.setState({ photoData: [tokenId, ownerAddr, reputationCount] })
-        this.setState({ photoDataAll: [...this.state.photoDataAll, this.state.photoData] })
-      })
-      console.log('=== colors ===', this.state.colors)
-      console.log('=== photoData ===', this.state.photoData)      
-      console.log('=== photoDataAll ===', this.state.photoDataAll)
-    })
-  }  
-
 
 
  
@@ -297,19 +230,6 @@ class App extends Component {
       {this.state.web3 && this.state.photo_marketplace && (
         <div className={styles.contracts}>
 
-          <Box bg="salmon" color="white" fontSize={4} p={3} width={[1, 1, 0.5]}>
-            <h2>Photo Upload to IPFS</h2>
-
-            <form onSubmit={this.onSubmit}>
-              <input type='file' onChange={this.captureFile} />
-              <Button size={'small'}><input type='submit' /></Button>
-            </form>
-          </Box>
-
-          <hr />
-
-          <span style={{ padding: "30px" }}></span>
-
           <h2>NFT based Photo MarketPlace</h2>
 
           { this.state.colors.map((color, key) => {
@@ -325,7 +245,6 @@ class App extends Component {
                       borderRadius={8}
                       height="100%"
                       maxWidth='100%'
-                      src={ `https://ipfs.io/ipfs/${color}` }
                     />
 
                     <span style={{ padding: "20px" }}></span>
