@@ -61,7 +61,7 @@ class App extends Component {
  
     let FlashLoanReceiverExample = {};
     try {
-      FlashLoanReceiverExample = require("../../build/contracts/PhotoMarketPlace.json"); // Load ABI of contract of FlashLoanReceiverExample
+      FlashLoanReceiverExample = require("../../build/contracts/FlashLoanReceiverExample.json"); // Load ABI of contract of FlashLoanReceiverExample
     } catch (e) {
       console.log(e);
     }
