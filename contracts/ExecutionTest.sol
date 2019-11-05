@@ -16,13 +16,13 @@ contract ExecutionTest is PhStorage, PhOwnable {
 
     address private _aTokenAddr;
 
-    constructor(address aToken) public {
-        _aTokenAddr = aToken;
-    }
+    // constructor(address aToken) public {
+    //     _aTokenAddr = aToken;
+    // }
 
     function executeFlashLoan(address _reserve,
                               uint256 _amount,
-                              uint256 _fee) public returns (bool) {
+                              uint256 _fee) external returns (bool) {
         
         //executeOperation(_reserve, _amount, _fee);
 

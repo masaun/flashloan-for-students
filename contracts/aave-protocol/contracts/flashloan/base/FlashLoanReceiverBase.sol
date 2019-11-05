@@ -22,7 +22,6 @@ contract FlashLoanReceiverBase is IFlashLoanReceiver {
     }
 
     function transferFundsBackToPoolInternal(address _reserve, uint _amount) internal {
-
         address payable core = addressesProvider.getLendingPoolCore();
 
         transferInternal(core,_reserve, _amount);
@@ -35,8 +34,6 @@ contract FlashLoanReceiverBase is IFlashLoanReceiver {
         }
 
         IERC20(_reserve).safeTransfer(_destination, _amount);
-
-
     }
 
     function getBalanceInternal(address _target, address _reserve) internal view returns(uint256) {
