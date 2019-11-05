@@ -23,7 +23,7 @@ contract FlashLoanReceiverExample is FlashLoanReceiverBase {
     function executeOperation(
         address _reserve,
         uint256 _amount,
-        uint256 _fee) public returns (uint256 returnedAmount) {
+        uint256 _fee) external returns (uint256 returnedAmount) {
 
         //check the contract has the specified balance
         require(_amount <= getBalanceInternal(address(this), _reserve), 
@@ -38,4 +38,10 @@ contract FlashLoanReceiverExample is FlashLoanReceiverBase {
         transferFundsBackToPoolInternal(_reserve, _amount.add(_fee));
         return _amount.add(_fee);
     }
+
+
+    function testFunc() public returns (bool) {
+        return true;
+    }
+    
 }

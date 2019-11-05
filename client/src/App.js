@@ -34,6 +34,9 @@ class App extends Component {
 
     const { accounts, flash_loan_receiver_example, web3 } = this.state;
 
+    const response = await flash_loan_receiver_example.methods.testFunc().send({ from: accounts[0] })
+    console.log('=== response of testFunc function ===', response);      // Debug
+
     let _reserve = '0x69a8f88882c02d0b1ef9041f7d8bc35f0508fc34'
     let _amount = 100
     let _fee = 10
