@@ -7,6 +7,8 @@ import "./aave-protocol/contracts/flashloan/base/FlashLoanReceiverBase.sol";
 import "./aave-protocol/contracts/configuration/LendingPoolAddressesProvider.sol";
 import "./aave-protocol/contracts/configuration/NetworkMetadataProvider.sol";
 
+import "./storage/PhStorage.sol";
+import "./modifiers/PhOwnable.sol";
 
 contract FlashLoanReceiverExample is FlashLoanReceiverBase {
 
