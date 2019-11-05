@@ -22,52 +22,26 @@ class App extends Component {
       web3: null,
       accounts: null,
       route: window.location.pathname.replace("/", ""),
-
-      /////// NFT
-      photo_marketplace: null, // Instance of contract
-      totalSupply: 0,
-      colors: [],         // Array for NFT
-
-      photoData: [],
-      photoDataAll: []
     };
 
     this.getTestData = this.getTestData.bind(this);
-    this.addReputation = this.addReputation.bind(this);
   }
 
-
-  ///////--------------------- Functions of reputation ---------------------------
-  addReputation = async () => {
-    const { accounts, photo_marketplace } = this.state;
-
-    let _from2 = "0x2cb2418B11B66E331fFaC7FFB0463d91ef8FE8F5"
-    let _to2 = accounts[0]
-    let _tokenId2 = 1
-    const response_1 = await photo_marketplace.methods.reputation(_from2, _to2, _tokenId2).send({ from: accounts[0] })
-    console.log('=== response of reputation function ===', response_1);      // Debug
-
-    const response_2 = await photo_marketplace.methods.getReputationCount(_tokenId2).call()
-    console.log('=== response of getReputationCount function ===', response_2);      // Debug
-  }
 
 
   ///////--------------------- Functions of testFunc ---------------------------  
   getTestData = async () => {
 
-    const { accounts, photo_marketplace, web3 } = this.state;
-    console.log('=== accounts[0] ===', accounts[0]);      // Debug
+    const { accounts, flash_loan_receiver_example, web3 } = this.state;
 
+    const response = await flash_loan_receiver_example.methods.testFunc().send({ from: accounts[0] })
+    console.log('=== response of testFunc function ===', response);      // Debug
 
-    let _from = accounts[0]
-    let _to = "0x2cb2418B11B66E331fFaC7FFB0463d91ef8FE8F5"
-    let _tokenId = 1
-    const response_buy = await photo_marketplace.methods.buy(_from, _to, _tokenId).send({ from: accounts[0] })
-    console.log('=== response of buy function ===', response_buy);      // Debug
-
-
-    const response_1 = await photo_marketplace.methods.testFunc().send({ from: accounts[0] })
-    console.log('=== response of testFunc function ===', response_1);      // Debug   
+    let _reserve = '0x69a8f88882c02d0b1ef9041f7d8bc35f0508fc34'
+    let _amount = 100
+    let _fee = 10
+    const response_1 = await flash_loan_receiver_example.methods.executeOperation(_reserve, _amount, _fee).send({ from: accounts[0] })
+    console.log('=== response of executeOperation function ===', response_1);      // Debug
   }
 
 
@@ -86,14 +60,13 @@ class App extends Component {
   }
 
   componentDidMount = async () => {
-    console.log('=== photoData（＠componentDidMount）===', this.state.photoData)      
-    console.log('=== photoDataAll（＠componentDidMount）===', this.state.photoDataAll)
-
     const hotLoaderDisabled = zeppelinSolidityHotLoaderOptions.disabled;
  
-    let PhotoMarketPlace = {};
+    let FlashLoanReceiverExample = {};
+    let ExecutionTest = {};
     try {
-      PhotoMarketPlace = require("../../build/contracts/PhotoMarketPlace.json"); // Load ABI of contract of PhotoMarketPlace
+      FlashLoanReceiverExample = require("../../build/contracts/FlashLoanReceiverExample.json"); // Load ABI of contract of FlashLoanReceiverExample
+      ExecutionTest = require("../../build/contracts/ExecutionTest.json"); // Load ABI of contract of ExecutionTest
     } catch (e) {
       console.log(e);
     }
@@ -120,52 +93,46 @@ class App extends Component {
         let balance = accounts.length > 0 ? await web3.eth.getBalance(accounts[0]): web3.utils.toWei('0');
         balance = web3.utils.fromWei(balance, 'ether');
 
-        let instancePhotoMarketPlace = null;
+        let instanceFlashLoanReceiverExample = null;
+        let instanceExecutionTest = null;
         let deployedNetwork = null;
 
         // Create instance of contracts
-        if (PhotoMarketPlace.networks) {
-          deployedNetwork = PhotoMarketPlace.networks[networkId.toString()];
+        if (FlashLoanReceiverExample.networks) {
+          deployedNetwork = FlashLoanReceiverExample.networks[networkId.toString()];
           if (deployedNetwork) {
-            instancePhotoMarketPlace = new web3.eth.Contract(
-              PhotoMarketPlace.abi,
+            instanceFlashLoanReceiverExample = new web3.eth.Contract(
+              FlashLoanReceiverExample.abi,
               deployedNetwork && deployedNetwork.address,
             );
-            console.log('=== instancePhotoMarketPlace ===', instancePhotoMarketPlace);
+            console.log('=== instanceFlashLoanReceiverExample ===', instanceFlashLoanReceiverExample);
+          }
+        }
+        if (ExecutionTest.networks) {
+          deployedNetwork = ExecutionTest.networks[networkId.toString()];
+          if (deployedNetwork) {
+            instanceExecutionTest = new web3.eth.Contract(
+              ExecutionTest.abi,
+              deployedNetwork && deployedNetwork.address,
+            );
+            console.log('=== instanceExecutionTest ===', instanceExecutionTest);
           }
         }
 
-        if (instancePhotoMarketPlace) {
+        if (instanceFlashLoanReceiverExample || instanceExecutionTest) {
           // Set web3, accounts, and contract to the state, and then proceed with an
           // example of interacting with the contract's methods.
           this.setState({ web3, ganacheAccounts, accounts, balance, networkId, networkType, hotLoaderDisabled,
-            isMetaMask, photo_marketplace: instancePhotoMarketPlace }, () => {
-              this.refreshValues(instancePhotoMarketPlace);
+            isMetaMask, flash_loan_receiver_example: instanceFlashLoanReceiverExample, execution_test: instanceExecutionTest }, () => {
+              this.refreshValues(instanceFlashLoanReceiverExample, instanceExecutionTest);
               setInterval(() => {
-                this.refreshValues(instancePhotoMarketPlace);
+                this.refreshValues(instanceFlashLoanReceiverExample, instanceExecutionTest);
               }, 5000);
             });
         }
         else {
           this.setState({ web3, ganacheAccounts, accounts, balance, networkId, networkType, hotLoaderDisabled, isMetaMask });
         }
-
-
-        //---------------- NFT（Always load listed NFT data）------------------
-        const { photo_marketplace } = this.state;
-
-        const totalSupply = await photo_marketplace.methods.totalSupply().call()
-        this.setState({ totalSupply: totalSupply })
-
-        // Load Colors
-        for (var i=1; i<=totalSupply; i++) {
-          const color = await photo_marketplace.methods.colors(i - 1).call()
-          this.setState({
-            colors: [...this.state.colors, color]
-          })
-        }
-        console.log('======== colors ========', this.state.colors)
-
       }
     } catch (error) {
       // Catch any errors for any of the above operations.
@@ -182,9 +149,12 @@ class App extends Component {
     }
   }
 
-  refreshValues = (instancePhotoMarketPlace) => {
-    if (instancePhotoMarketPlace) {
-      console.log('refreshValues of instancePhotoMarketPlace');
+  refreshValues = (instanceFlashLoanReceiverExample, instanceExecutionTest) => {
+    if (instanceFlashLoanReceiverExample) {
+      console.log('refreshValues of instanceFlashLoanReceiverExample');
+    }
+    if (instanceExecutionTest) {
+      console.log('refreshValues of instanceExecutionTest');
     }
   }
 
@@ -220,52 +190,37 @@ class App extends Component {
     );
   }
 
-  renderPhotoMarketPlace() {
+  renderFlashLoanReceiverExample() {
     return (
       <div className={styles.wrapper}>
       {!this.state.web3 && this.renderLoader()}
-      {this.state.web3 && !this.state.photo_marketplace && (
-        this.renderDeployCheck('photo_marketplace')
+      {this.state.web3 && !this.state.flash_loan_receiver_example && (
+        this.renderDeployCheck('flash_loan_receiver_example')
       )}
-      {this.state.web3 && this.state.photo_marketplace && (
+      {this.state.web3 && this.state.flash_loan_receiver_example && (
         <div className={styles.contracts}>
 
-          <h2>NFT based Photo MarketPlace</h2>
+          <h2>flash_loan_receiver_example</h2>
 
-          { this.state.colors.map((color, key) => {
-            return (
-              <div key={key} className="">
-                <div className={styles.widgets}>
-                  <Card width={'30%'} bg="primary">
+            <div className={styles.widgets}>
+              <Card width={'30%'} bg="primary">
 
-                    <h4>Photo #{ key + 1 }</h4>
+                <h4>Flash Loan</h4>
 
-                    <Image
-                      alt="random unsplash image"
-                      borderRadius={8}
-                      height="100%"
-                      maxWidth='100%'
-                    />
+                <Image
+                  alt="random unsplash image"
+                  borderRadius={8}
+                  height="100%"
+                  maxWidth='100%'
+                />
 
-                    <span style={{ padding: "20px" }}></span>
+                <span style={{ padding: "20px" }}></span>
 
-                    <br />
+                <br />
 
-                    <Button size={'small'} onClick={this.getTestData}> Buy </Button>
-
-                    <span style={{ padding: "5px" }}></span>
-
-                    <Button size={'small'} onClick={this.addReputation}> Rep </Button> 
-
-                    <span style={{ padding: "5px" }}></span>
-
-                    <p>Reputation Count: 1</p>
-                  </Card>
-                </div>
-              </div>
-            )
-          }) }
-
+                <Button size={'small'} onClick={this.getTestData}> executeOperation </Button>
+              </Card>
+            </div>
 
         </div>
       )}
@@ -278,7 +233,7 @@ class App extends Component {
       <div className={styles.App}>
         <Header />
           {this.state.route === '' && this.renderInstructions()}
-          {this.state.route === 'photo_marketplace' && this.renderPhotoMarketPlace()}
+          {this.state.route === 'flash_loan_receiver_example' && this.renderFlashLoanReceiverExample()}
         <Footer />
       </div>
     );
