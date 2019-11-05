@@ -60,8 +60,10 @@ class App extends Component {
     const hotLoaderDisabled = zeppelinSolidityHotLoaderOptions.disabled;
  
     let FlashLoanReceiverExample = {};
+    let ExecutionTest = {};
     try {
       FlashLoanReceiverExample = require("../../build/contracts/FlashLoanReceiverExample.json"); // Load ABI of contract of FlashLoanReceiverExample
+      ExecutionTest = require("../../build/contracts/ExecutionTest.json"); // Load ABI of contract of ExecutionTest
     } catch (e) {
       console.log(e);
     }
@@ -89,6 +91,7 @@ class App extends Component {
         balance = web3.utils.fromWei(balance, 'ether');
 
         let instanceFlashLoanReceiverExample = null;
+        let instanceExecutionTest = null;
         let deployedNetwork = null;
 
         // Create instance of contracts
@@ -102,15 +105,25 @@ class App extends Component {
             console.log('=== instanceFlashLoanReceiverExample ===', instanceFlashLoanReceiverExample);
           }
         }
+        if (ExecutionTest.networks) {
+          deployedNetwork = ExecutionTest.networks[networkId.toString()];
+          if (deployedNetwork) {
+            instanceExecutionTest = new web3.eth.Contract(
+              ExecutionTest.abi,
+              deployedNetwork && deployedNetwork.address,
+            );
+            console.log('=== instanceExecutionTest ===', instanceExecutionTest);
+          }
+        }
 
-        if (instanceFlashLoanReceiverExample) {
+        if (instanceFlashLoanReceiverExample || instanceExecutionTest) {
           // Set web3, accounts, and contract to the state, and then proceed with an
           // example of interacting with the contract's methods.
           this.setState({ web3, ganacheAccounts, accounts, balance, networkId, networkType, hotLoaderDisabled,
-            isMetaMask, flash_loan_receiver_example: instanceFlashLoanReceiverExample }, () => {
-              this.refreshValues(instanceFlashLoanReceiverExample);
+            isMetaMask, flash_loan_receiver_example: instanceFlashLoanReceiverExample, execution_test: instanceExecutionTest }, () => {
+              this.refreshValues(instanceFlashLoanReceiverExample, instanceExecutionTest);
               setInterval(() => {
-                this.refreshValues(instanceFlashLoanReceiverExample);
+                this.refreshValues(instanceFlashLoanReceiverExample, instanceExecutionTest);
               }, 5000);
             });
         }
@@ -133,9 +146,12 @@ class App extends Component {
     }
   }
 
-  refreshValues = (instanceFlashLoanReceiverExample) => {
+  refreshValues = (instanceFlashLoanReceiverExample, instanceExecutionTest) => {
     if (instanceFlashLoanReceiverExample) {
       console.log('refreshValues of instanceFlashLoanReceiverExample');
+    }
+    if (instanceExecutionTest) {
+      console.log('refreshValues of instanceExecutionTest');
     }
   }
 
