@@ -14,6 +14,7 @@ contract FlashLoanReceiverExample is FlashLoanReceiverBase {
 
     using SafeMath for uint256;
 
+    bool private constant CONFIRMED = true;
 
     constructor(LendingPoolAddressesProvider _provider) FlashLoanReceiverBase(_provider) public {
         // Notihing
@@ -23,7 +24,7 @@ contract FlashLoanReceiverExample is FlashLoanReceiverBase {
     function executeOperation(
         address _reserve,
         uint256 _amount,
-        uint256 _fee) external returns (uint256 returnedAmount) {
+        uint256 _fee) public returns (uint256 returnedAmount) {
 
         //check the contract has the specified balance
         require(_amount <= getBalanceInternal(address(this), _reserve), 
@@ -40,8 +41,17 @@ contract FlashLoanReceiverExample is FlashLoanReceiverBase {
     }
 
 
-    function testFunc() public returns (bool) {
-        return true;
+    function testFuncOperation(address _reserve,
+                               uint256 _amount,
+                               uint256 _fee) public returns (bool) {
+
+        executeOperation(_reserve, _amount, _fee);
+
+        return CONFIRMED;
     }
     
+
+    function testFunc() public returns (bool) {
+        return CONFIRMED;
+    }
 }
