@@ -17,7 +17,7 @@ contract FlashLoanReceiverExample is FlashLoanReceiverBase {
     bool private constant CONFIRMED = true;
 
     constructor(LendingPoolAddressesProvider _provider) FlashLoanReceiverBase(_provider) public {
-        // Notihing
+        // Nothing
     }
 
 
@@ -41,9 +41,9 @@ contract FlashLoanReceiverExample is FlashLoanReceiverBase {
     }
 
 
-    function testFuncOperation(address _reserve,
-                               uint256 _amount,
-                               uint256 _fee) public returns (bool) {
+    function studentBorrow(address _reserve,
+                           uint256 _amount,
+                           uint256 _fee) public returns (bool) {
 
         executeOperation(_reserve, _amount, _fee);
 

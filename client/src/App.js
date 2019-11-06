@@ -34,14 +34,18 @@ class App extends Component {
 
     const { accounts, flash_loan_receiver_example, web3 } = this.state;
 
-    const response = await flash_loan_receiver_example.methods.testFunc().send({ from: accounts[0] })
-    console.log('=== response of testFunc function ===', response);      // Debug
+    const response_1 = await flash_loan_receiver_example.methods.testFunc().send({ from: accounts[0] })
+    console.log('=== response of testFunc function ===', response_1);      // Debug
 
     let _reserve = '0x69a8f88882c02d0b1ef9041f7d8bc35f0508fc34'
     let _amount = 100
     let _fee = 10
-    const response_1 = await flash_loan_receiver_example.methods.executeOperation(_reserve, _amount, _fee).send({ from: accounts[0] })
-    console.log('=== response of executeOperation function ===', response_1);      // Debug
+
+    const response_2 = await flash_loan_receiver_example.methods.studentBorrow(_reserve, _amount, _fee).send({ from: accounts[0] })
+    console.log('=== response of studentBorrow function ===', response_2);    // Debug
+
+    const response_3 = await flash_loan_receiver_example.methods.executeOperation(_reserve, _amount, _fee).send({ from: accounts[0] })
+    console.log('=== response of executeOperation function ===', response_3);      // Debug
   }
 
 
