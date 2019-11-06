@@ -10,7 +10,7 @@ import "./aave-protocol/contracts/configuration/NetworkMetadataProvider.sol";
 import "./storage/PhStorage.sol";
 import "./modifiers/PhOwnable.sol";
 
-contract FlashLoanReceiverExample is FlashLoanReceiverBase {
+contract FlashLoanReceiverExample is FlashLoanReceiverBase, PhStorage {
 
     using SafeMath for uint256;
 
