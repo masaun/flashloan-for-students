@@ -1,10 +1,10 @@
-const ExecutionTest = artifacts.require("./ExecutionTest.sol");
+const FlashLoanReceiverExample = artifacts.require("./FlashLoanReceiverExample.sol");
 
 let provider = "0xe288485a9ac5346e63df116561746f2d93a0cd04"
 
 module.exports = function(deployer, network, accounts) {
   deployer.deploy(
-    ExecutionTest,
+    FlashLoanReceiverExample,
     provider
   );
 };

@@ -51,6 +51,7 @@ contract FlashLoanReceiverExample is FlashLoanReceiverBase, PhStorage, AvConstan
         _totalBorrowAmount = executeOperation(_reserve, _amount, _fee);
 
         emit StudentBorrow(_totalBorrowAmount);
+        //emit StudentBorrow(_amount);
 
         return _totalBorrowAmount;
     }
