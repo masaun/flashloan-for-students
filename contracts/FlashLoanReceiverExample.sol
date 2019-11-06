@@ -15,10 +15,13 @@ contract FlashLoanReceiverExample is FlashLoanReceiverBase, PhStorage, AvConstan
 
     using SafeMath for uint256;
 
+    LendingPoolAddressesProvider lendingPoolAddressesProvider;
+
     //bool private constant CONFIRMED = true;
 
     constructor(LendingPoolAddressesProvider _provider) FlashLoanReceiverBase(_provider) public {
         // Nothing
+        lendingPoolAddressesProvider = LendingPoolAddressesProvider(_provider);
     }
 
 
@@ -51,7 +54,6 @@ contract FlashLoanReceiverExample is FlashLoanReceiverBase, PhStorage, AvConstan
         _totalBorrowAmount = executeOperation(_reserve, _amount, _fee);
 
         emit StudentBorrow(_totalBorrowAmount);
-        //emit StudentBorrow(_amount);
 
         return _totalBorrowAmount;
     }

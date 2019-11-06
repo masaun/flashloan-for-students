@@ -1,6 +1,7 @@
 const FlashLoanReceiverExample = artifacts.require("./FlashLoanReceiverExample.sol");
 
-let provider = "0xe288485a9ac5346e63df116561746f2d93a0cd04"
+// Contract address of LendingPoolAddressesProvider.sol at Kovan
+let provider = "0xf3A9E7CF13fDf3B52846769eC40D630459050a5f"
 
 module.exports = function(deployer, network, accounts) {
   deployer.deploy(
