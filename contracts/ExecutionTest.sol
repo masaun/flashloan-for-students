@@ -6,9 +6,10 @@ import "./FlashLoanReceiverExample.sol";
 import "./aave-protocol/contracts/tokenization/AToken.sol";
 
 import "./storage/PhStorage.sol";
+import "./storage/AvConstants.sol";
 import "./modifiers/PhOwnable.sol";
 
-contract ExecutionTest is PhStorage, PhOwnable {
+contract ExecutionTest is PhStorage, AvConstants, PhOwnable {
 
     using SafeMath for uint256;
 
@@ -26,7 +27,7 @@ contract ExecutionTest is PhStorage, PhOwnable {
         
         //executeOperation(_reserve, _amount, _fee);
 
-        return CONFIRMED;
+        return AvConstants.CONFIRMED;
     }
 
 
@@ -41,7 +42,7 @@ contract ExecutionTest is PhStorage, PhOwnable {
         /// redeem method call
         aTokenInstance.redeem(amount);
 
-        return CONFIRMED;
+        return AvConstants.CONFIRMED;
     }
     
     
