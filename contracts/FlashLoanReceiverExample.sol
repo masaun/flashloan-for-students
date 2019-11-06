@@ -43,11 +43,15 @@ contract FlashLoanReceiverExample is FlashLoanReceiverBase {
 
     function studentBorrow(address _reserve,
                            uint256 _amount,
-                           uint256 _fee) public returns (bool) {
+                           uint256 _fee) public returns (uint256 totalBorrowAmount) {
 
-        executeOperation(_reserve, _amount, _fee);
+        uint256 _totalBorrowAmount;
 
-        return CONFIRMED;
+        _totalBorrowAmount = executeOperation(_reserve, _amount, _fee);
+
+        emit StudentBorrow(_totalBorrowAmount);
+
+        return _totalBorrowAmount;
     }
     
 
