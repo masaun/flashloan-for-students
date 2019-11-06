@@ -1,9 +1,9 @@
 const ExecutionTest = artifacts.require("./ExecutionTest.sol");
-const AToken = artifacts.require("./aave-protocol/contracts/tokenization/AToken.sol");
+//const AToken = artifacts.require("./aave-protocol/contracts/tokenization/AToken.sol");
 
 module.exports = function(deployer, network, accounts) {
   deployer.deploy(
-    ExecutionTest,
+    ExecutionTest
     //AToken.address  // ContractAddress of AToken.sol
   );
 };
