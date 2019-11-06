@@ -32,10 +32,14 @@ class App extends Component {
   ///////--------------------- Functions of testFunc ---------------------------  
   getTestData = async () => {
 
-    const { accounts, flash_loan_receiver_example, web3 } = this.state;
+    const { accounts, flash_loan_receiver_example, execution_test, web3 } = this.state;
 
     const response_1 = await flash_loan_receiver_example.methods.testFunc().send({ from: accounts[0] })
     console.log('=== response of testFunc function ===', response_1);      // Debug
+
+    const res_deposit = await execution_test.methods.depositDAI().send({ from: accounts[0] })
+    console.log('=== response of depositDAI function ===', res_deposit);      // Debug
+
 
     let _reserve = '0x69a8f88882c02d0b1ef9041f7d8bc35f0508fc34'
     let _amount = 100

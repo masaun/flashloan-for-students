@@ -15,13 +15,10 @@ contract FlashLoanReceiverExample is FlashLoanReceiverBase, PhStorage, AvConstan
 
     using SafeMath for uint256;
 
-    LendingPoolAddressesProvider lendingPoolAddressesProvider;
-
     //bool private constant CONFIRMED = true;
 
     constructor(LendingPoolAddressesProvider _provider) FlashLoanReceiverBase(_provider) public {
         // Nothing
-        lendingPoolAddressesProvider = LendingPoolAddressesProvider(_provider);
     }
 
 
