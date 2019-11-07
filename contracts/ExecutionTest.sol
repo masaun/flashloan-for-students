@@ -2,7 +2,12 @@ pragma solidity ^0.5.0;
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
-import "./FlashLoanReceiverExample.sol";
+import "./aave-protocol/contracts/lendingpool/LendingPool.sol";
+
+import "./aave-protocol/contracts/flashloan/base/FlashLoanReceiverBase.sol";
+import "./aave-protocol/contracts/configuration/LendingPoolAddressesProvider.sol";
+import "./aave-protocol/contracts/configuration/NetworkMetadataProvider.sol";
+
 import "./aave-protocol/contracts/tokenization/AToken.sol";
 
 import "./storage/PhStorage.sol";
@@ -15,14 +20,40 @@ contract ExecutionTest is PhStorage, AvConstants, PhOwnable {
 
     address daiAddress;
 
-    AToken aToken;
+    LendingPool lendingPool;
     LendingPoolAddressesProvider provider;
-    constructor(AToken _aTokenAddr, LendingPoolAddressesProvider _provider, address _daiAddress) public {
+
+    constructor(LendingPoolAddressesProvider _provider, address _daiAddress) public {
         // Nothing
-        aToken = _aTokenAddr;
         provider = _provider;
         daiAddress = _daiAddress;
     }
+
+
+
+    function getActiveReserves() public view returns (bool) {
+        /// Retrieve LendingPool address
+        LendingPoolAddressesProvider provider = LendingPoolAddressesProvider(provider);
+        LendingPool lendingPool = LendingPool(provider.getLendingPool());
+
+        lendingPool.getReserves();
+    }
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     function depositDAI() public returns (bool) {
@@ -46,19 +77,19 @@ contract ExecutionTest is PhStorage, AvConstants, PhOwnable {
 
 
 
-    function redeemWithAtoken() public returns (bool) {
-        /// Instantiation of the AToken address
-        AToken aTokenInstance = AToken(aToken);
-        //AToken aTokenInstance = AToken("/*aToken_address*/");
+    // function redeemWithAtoken() public returns (bool) {
+    //     /// Instantiation of the AToken address
+    //     AToken aTokenInstance = AToken(aToken);
+    //     //AToken aTokenInstance = AToken("/*aToken_address*/");
 
-        /// Input variables
-        uint256 amount = 1000 * 1e18;
+    //     /// Input variables
+    //     uint256 amount = 1000 * 1e18;
 
-        /// redeem method call
-        aTokenInstance.redeem(amount);
+    //     /// redeem method call
+    //     aTokenInstance.redeem(amount);
 
-        return AvConstants.CONFIRMED;
-    }
+    //     return AvConstants.CONFIRMED;
+    // }
     
 }
 
