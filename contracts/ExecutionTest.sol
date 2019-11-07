@@ -25,8 +25,8 @@ contract ExecutionTest is PhStorage, AvConstants, PhOwnable {
     LendingPoolAddressesProvider provider;
 
     constructor(LendingPoolAddressesProvider _provider, address _daiAddress) public {
-        provider = _provider;
-        lendingPool = LendingPool(provider.getLendingPool());
+        provider = LendingPoolAddressesProvider(_provider);
+        lendingPool = LendingPool(_provider.getLendingPool());
 
         daiAddress = _daiAddress;
     }
@@ -34,9 +34,6 @@ contract ExecutionTest is PhStorage, AvConstants, PhOwnable {
 
     // Successful to call and get result.
     function getActiveReserves() public view returns (address[] memory _getReserves) {
-        /// Retrieve LendingPool address
-        //LendingPool lendingPool = LendingPool(provider.getLendingPool());
-
         return lendingPool.getReserves();
     }
     
