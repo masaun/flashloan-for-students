@@ -21,8 +21,8 @@ contract ExecutionTest is PhStorage, AvConstants, PhOwnable {
     address daiAddress;
 
     // Define instance of external contracts
-    LendingPool lendingPool;
     LendingPoolAddressesProvider provider;
+    LendingPool lendingPool;
 
     constructor(LendingPoolAddressesProvider _provider, address _daiAddress) public {
         provider = LendingPoolAddressesProvider(_provider);
@@ -41,35 +41,19 @@ contract ExecutionTest is PhStorage, AvConstants, PhOwnable {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     function depositDAI() public returns (bool) {
         /**
         * Deposit of 1000 DAI
         */
 
-        /// Retrieve LendingPool address
-        LendingPoolAddressesProvider provider = LendingPoolAddressesProvider(provider);
-        LendingPool lendingPool = LendingPool(provider.getLendingPool());
-
         /// Input variables
+        address activeReserveAddress = getActiveReserves()[0];
         //address daiAddress = "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359";
         uint256 amount = 1000 * 1e18;
         uint16 referral = 0;
 
         /// Deposit method call
-        lendingPool.deposit(daiAddress, amount, referral);
+        lendingPool.deposit(activeReserveAddress, amount, referral);
     }
     
 
