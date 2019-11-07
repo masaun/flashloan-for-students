@@ -37,13 +37,13 @@ class App extends Component {
     const response_1 = await flash_loan_receiver_example.methods.testFunc().send({ from: accounts[0] })
     console.log('=== response of testFunc function ===', response_1);      // Debug
 
-    const res_deposit = await execution_test.methods.redeemWithAtoken()().send({ from: accounts[0] })
+    const res_deposit = await execution_test.methods.redeemWithAtoken().send({ from: accounts[0] })
     console.log('=== response of redeemWithAtoken function ===', res_deposit);      // Debug
 
 
-    let _reserve = '0x69a8f88882c02d0b1ef9041f7d8bc35f0508fc34'
-    let _amount = 100
-    let _fee = 10
+    let _reserve = '0xc4375b7de8af5a38a93548eb8453a498222c4ff2'
+    let _amount = 10
+    let _fee = 1
 
     const response_2 = await flash_loan_receiver_example.methods.studentBorrow(_reserve, _amount, _fee).send({ from: accounts[0] })
     console.log('=== response of studentBorrow function ===', response_2);    // Debug
