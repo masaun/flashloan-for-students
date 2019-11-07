@@ -41,19 +41,33 @@ contract ExecutionTest is PhStorage, AvConstants, PhOwnable {
 
 
 
-    function depositDAI() public returns (bool) {
-        /**
-        * Deposit of 1000 DAI
-        */
-
+    /**
+    * Enable usage of the DAI reserve as collateral for the user
+    */
+    function reserveDaiAsCollateral(address _checksumedAddress) public returns (bool) {
         /// Input variables
-        address activeReserveAddress = getActiveReserves()[0];
+        address daiAddress = _checksumedAddress;
+        bool useAsCollateral = true;
+
+        /// setUserUseReserveAsCollateral method call
+        lendingPool.setUserUseReserveAsCollateral(daiAddress, useAsCollateral);
+    }
+    
+
+
+    /**
+    * Deposit of 1000 DAI
+    */
+    function depositDAI() public returns (bool) {
+        /// Input variables
+        //address activeReserveAddress = getActiveReserves()[0];
         //address daiAddress = "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359";
-        uint256 amount = 1000 * 1e18;
+        uint256 amount = 100;
         uint16 referral = 0;
 
         /// Deposit method call
-        lendingPool.deposit(activeReserveAddress, amount, referral);
+        lendingPool.deposit(daiAddress, amount, referral);
+        //lendingPool.deposit(activeReserveAddress, amount, referral);
     }
     
 
