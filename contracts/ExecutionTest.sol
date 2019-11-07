@@ -31,12 +31,12 @@ contract ExecutionTest is PhStorage, AvConstants, PhOwnable {
 
 
 
-    function getActiveReserves() public view returns (bool) {
+    function getActiveReserves() public view returns (address[] memory _getReserves) {
         /// Retrieve LendingPool address
         LendingPoolAddressesProvider provider = LendingPoolAddressesProvider(provider);
         LendingPool lendingPool = LendingPool(provider.getLendingPool());
 
-        lendingPool.getReserves();
+        return lendingPool.getReserves();
     }
     
 
