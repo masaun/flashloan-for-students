@@ -37,8 +37,8 @@ class App extends Component {
     const response_1 = await flash_loan_receiver_example.methods.testFunc().send({ from: accounts[0] })
     console.log('=== response of testFunc function ===', response_1);      // Debug
 
-    const res_deposit = await execution_test.methods.getActiveReserves().call()
-    console.log('=== response of getActiveReserves() function ===', res_deposit);      // Debug
+    const response_4 = await execution_test.methods.getActiveReserves().call()
+    console.log('=== response of getActiveReserves() function ===', response_4);      // Debug
 
 
     let _reserve = '0xc4375b7de8af5a38a93548eb8453a498222c4ff2'
