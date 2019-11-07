@@ -58,7 +58,7 @@ contract ExecutionTest is PhStorage, AvConstants, PhOwnable {
     /**
     * Deposit of 1000 DAI
     */
-    function depositDAI() public returns (bool) {
+    function depositDAI() public payable returns (bool) {
         /// Input variables
         //address activeReserveAddress = getActiveReserves()[0];
         //address daiAddress = "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359";

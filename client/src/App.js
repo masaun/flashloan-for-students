@@ -41,9 +41,11 @@ class App extends Component {
     console.log('=== response of getActiveReserves() function ===', response_4); // Success
 
 
-    let _checksumedAddress = web3.utils.toChecksumAddress('0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD');;
-    const response_5 = await execution_test.methods.reserveDaiAsCollateral(_checksumedAddress).send({ from: accounts[0] })
-    console.log('=== response of reserveDaiAsCollateral() function ===', response_5);        // Fail
+    //let _checksumedAddress = web3.utils.toChecksumAddress('0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD');
+    let _depositorAddress = accounts[0];
+    let amountToDeposit = 10;
+    const response_5 = await execution_test.methods.depositDAI().send({ from: _depositorAddress, value: amountToDeposit })
+    console.log('=== response of depositDAI() function ===', response_5);        // Fail
 
 
     let _reserve = "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD"
