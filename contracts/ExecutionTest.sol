@@ -20,21 +20,22 @@ contract ExecutionTest is PhStorage, AvConstants, PhOwnable {
 
     address daiAddress;
 
+    // Define instance of external contracts
     LendingPool lendingPool;
     LendingPoolAddressesProvider provider;
 
     constructor(LendingPoolAddressesProvider _provider, address _daiAddress) public {
-        // Nothing
         provider = _provider;
+        lendingPool = LendingPool(provider.getLendingPool());
+
         daiAddress = _daiAddress;
     }
 
 
-
+    // Successful to call and get result.
     function getActiveReserves() public view returns (address[] memory _getReserves) {
         /// Retrieve LendingPool address
-        LendingPoolAddressesProvider provider = LendingPoolAddressesProvider(provider);
-        LendingPool lendingPool = LendingPool(provider.getLendingPool());
+        //LendingPool lendingPool = LendingPool(provider.getLendingPool());
 
         return lendingPool.getReserves();
     }
