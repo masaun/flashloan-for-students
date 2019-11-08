@@ -8,16 +8,17 @@ import "./aave-protocol/contracts/configuration/LendingPoolAddressesProvider.sol
 import "./aave-protocol/contracts/configuration/NetworkMetadataProvider.sol";
 
 import "./storage/PhStorage.sol";
+import "./storage/AvConstants.sol";
 import "./modifiers/PhOwnable.sol";
 
-contract FlashLoanReceiverExample is FlashLoanReceiverBase {
+contract FlashLoanReceiverExample is FlashLoanReceiverBase, PhStorage, AvConstants {
 
     using SafeMath for uint256;
 
-    bool private constant CONFIRMED = true;
+    //bool private constant CONFIRMED = true;
 
     constructor(LendingPoolAddressesProvider _provider) FlashLoanReceiverBase(_provider) public {
-        // Notihing
+        // Nothing
     }
 
 
@@ -41,17 +42,21 @@ contract FlashLoanReceiverExample is FlashLoanReceiverBase {
     }
 
 
-    function testFuncOperation(address _reserve,
-                               uint256 _amount,
-                               uint256 _fee) public returns (bool) {
+    function studentBorrow(address _reserve,
+                           uint256 _amount,
+                           uint256 _fee) public returns (uint256 totalBorrowAmount) {
 
-        executeOperation(_reserve, _amount, _fee);
+        uint _totalBorrowAmount;
 
-        return CONFIRMED;
+        _totalBorrowAmount = executeOperation(_reserve, _amount, _fee);
+
+        //emit StudentBorrow(_totalBorrowAmount);
+
+        return _totalBorrowAmount;
     }
     
 
     function testFunc() public returns (bool) {
-        return CONFIRMED;
+        return AvConstants.CONFIRMED;
     }
 }

@@ -32,16 +32,31 @@ class App extends Component {
   ///////--------------------- Functions of testFunc ---------------------------  
   getTestData = async () => {
 
-    const { accounts, flash_loan_receiver_example, web3 } = this.state;
+    const { accounts, flash_loan_receiver_example, execution_test, web3 } = this.state;
 
-    const response = await flash_loan_receiver_example.methods.testFunc().send({ from: accounts[0] })
-    console.log('=== response of testFunc function ===', response);      // Debug
+    const response_1 = await flash_loan_receiver_example.methods.testFunc().send({ from: accounts[0] })
+    console.log('=== response of testFunc function ===', response_1);
 
-    let _reserve = '0x69a8f88882c02d0b1ef9041f7d8bc35f0508fc34'
-    let _amount = 100
-    let _fee = 10
-    const response_1 = await flash_loan_receiver_example.methods.executeOperation(_reserve, _amount, _fee).send({ from: accounts[0] })
-    console.log('=== response of executeOperation function ===', response_1);      // Debug
+    const response_4 = await execution_test.methods.getActiveReserves().call()
+    console.log('=== response of getActiveReserves() function ===', response_4); // Success
+
+    // let _daiAddress = "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD"
+    // let _amount = 100
+    // let _referral = 1
+    // let _depositorAddress = accounts[0];
+    // const response_5 = await execution_test.methods.depositDAI().send({ from: _depositorAddress })
+    // console.log('=== response of depositDAI() function ===', response_5);        // Fail
+
+
+    let _reserve = "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD"
+    let _amount = 0
+    let _fee = 0
+
+    const response_2 = await flash_loan_receiver_example.methods.studentBorrow(_reserve, _amount, _fee).send({ from: accounts[0] })
+    console.log('=== response of studentBorrow function ===', response_2);
+
+    const response_3 = await flash_loan_receiver_example.methods.executeOperation(_reserve, _amount, _fee).send({ from: accounts[0] })
+    console.log('=== response of executeOperation function ===', response_3);
   }
 
 
