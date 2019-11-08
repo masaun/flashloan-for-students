@@ -46,11 +46,11 @@ contract FlashLoanReceiverExample is FlashLoanReceiverBase, PhStorage, AvConstan
                            uint256 _amount,
                            uint256 _fee) public returns (uint256 totalBorrowAmount) {
 
-        uint256 _totalBorrowAmount;
+        uint _totalBorrowAmount;
 
         _totalBorrowAmount = executeOperation(_reserve, _amount, _fee);
 
-        emit StudentBorrow(_totalBorrowAmount);
+        //emit StudentBorrow(_totalBorrowAmount);
 
         return _totalBorrowAmount;
     }

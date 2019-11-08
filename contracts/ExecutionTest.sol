@@ -3,13 +3,10 @@ pragma solidity ^0.5.0;
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 import "./aave-protocol/contracts/lendingpool/LendingPool.sol";
-
-import "./aave-protocol/contracts/flashloan/base/FlashLoanReceiverBase.sol";
-import "./aave-protocol/contracts/configuration/LendingPoolAddressesProvider.sol";
-import "./aave-protocol/contracts/configuration/NetworkMetadataProvider.sol";
-
 import "./aave-protocol/contracts/tokenization/AToken.sol";
 
+
+import "./FlashLoanReceiverExample.sol";
 import "./storage/PhStorage.sol";
 import "./storage/AvConstants.sol";
 import "./modifiers/PhOwnable.sol";
@@ -23,6 +20,7 @@ contract ExecutionTest is PhStorage, AvConstants, PhOwnable {
     // Define instance of external contracts
     LendingPoolAddressesProvider provider;
     LendingPool lendingPool;
+    FlashLoanReceiverExample flashLoanReceiverExample;
 
     constructor(LendingPoolAddressesProvider _provider, address _daiAddress) public {
         provider = LendingPoolAddressesProvider(_provider);
@@ -36,6 +34,12 @@ contract ExecutionTest is PhStorage, AvConstants, PhOwnable {
     function getActiveReserves() public view returns (address[] memory _getReserves) {
         return lendingPool.getReserves();
     }
+    
+
+
+    // function flashLoanOperation(address _reserve, uint256 _amount, uint256 _fee) public returns (bool) {
+    //     flashLoanReceiverExample.executeOperation(_reserve, _amount, _fee);
+    // }
     
 
 
@@ -59,14 +63,7 @@ contract ExecutionTest is PhStorage, AvConstants, PhOwnable {
     * Deposit of 1000 DAI
     */
     function depositDAI() public payable returns (bool) {
-        /// Input variables
-        //address activeReserveAddress = getActiveReserves()[0];
-        //address daiAddress = "0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359";
-        uint256 amount = 100;
-        uint16 referral = 0;
-
-        /// Deposit method call
-        lendingPool.deposit(daiAddress, amount, referral);
+        lendingPool.deposit(address(uint160(0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD)), 100, 0);
         //lendingPool.deposit(activeReserveAddress, amount, referral);
     }
     

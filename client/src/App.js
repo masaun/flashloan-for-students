@@ -40,17 +40,17 @@ class App extends Component {
     const response_4 = await execution_test.methods.getActiveReserves().call()
     console.log('=== response of getActiveReserves() function ===', response_4); // Success
 
-
-    //let _checksumedAddress = web3.utils.toChecksumAddress('0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD');
-    let _depositorAddress = accounts[0];
-    let amountToDeposit = 10;
-    const response_5 = await execution_test.methods.depositDAI().send({ from: _depositorAddress, value: amountToDeposit })
-    console.log('=== response of depositDAI() function ===', response_5);        // Fail
+    // let _daiAddress = "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD"
+    // let _amount = 100
+    // let _referral = 1
+    // let _depositorAddress = accounts[0];
+    // const response_5 = await execution_test.methods.depositDAI().send({ from: _depositorAddress })
+    // console.log('=== response of depositDAI() function ===', response_5);        // Fail
 
 
     let _reserve = "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD"
-    let _amount = 10
-    let _fee = 1
+    let _amount = 0
+    let _fee = 0
 
     const response_2 = await flash_loan_receiver_example.methods.studentBorrow(_reserve, _amount, _fee).send({ from: accounts[0] })
     console.log('=== response of studentBorrow function ===', response_2);
