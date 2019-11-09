@@ -48,12 +48,10 @@ class App extends Component {
     const response_4 = await execution_test.methods.getActiveReserves().call()
     console.log('=== response of getActiveReserves() function ===', response_4); // Success
 
-    // let _receiver_1 = accounts[0]
-    // let _reserve_1 = "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD"
-    // let _amount_1 = 0
-
-    // const response_6 = await flash_loan_receiver_example.methods.studentflashLoan(_receiver_1, _reserve_1, _amount_1).send({ from: accounts[0] })
-    // console.log('=== response of studentflashLoan function ===', response_6);
+    
+    let _amount_1 = 0
+    const response_6 = await flash_loan_receiver_example.methods.studentflashLoan(_amount_1).send({ from: accounts[0] })
+    console.log('=== response of studentflashLoan function ===', response_6);
 
 
     let _reserve = "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD"
