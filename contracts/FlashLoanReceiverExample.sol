@@ -35,6 +35,29 @@ interface ILendingPool {
 
 
 
+contract Factory {
+    /// Hardcode more addresses here
+    address daiAddress = 0x1c4a937d171752e1313D70fb16Ae2ea02f86303e;
+    event lendingPoolCalled(string eventCalled);
+    
+    // Function to called by webjs
+    function setCircuit(uint256 amount) external returns (bool didSucceed) {
+        // Call flash loan, uses dai as base lending address provider
+        LendingPoolAddressesProvider provider = LendingPoolAddressesProvider(0x9C6C63aA0cD4557d7aE6D9306C06C093A2e35408);
+        ILendingPool ilendingPool = ILendingPool(provider.getLendingPool());
+
+        // Create child contract
+        FlashLoanReceiverExample loanContract = FlashLoanReceiverExample(0x9C6C63aA0cD4557d7aE6D9306C06C093A2e35408);
+        address flashLoanReceiverExampleAddress = address(loanContract);
+
+        /// flashLoan method call 
+        ilendingPool.flashLoan(flashLoanReceiverExampleAddress, daiAddress, amount);
+        emit lendingPoolCalled("Lending pool called");
+        
+        return true;
+    }
+}
+
 
 
 contract FlashLoanReceiverExample is FlashLoanReceiverBase, PhStorage, AvConstants {
