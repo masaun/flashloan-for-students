@@ -33,11 +33,14 @@ contract FlashLoanReceiverExample is FlashLoanReceiverBase, PhStorage, AvConstan
 
 
 
-    function studentflashLoan(address payable _receiver,
-                              address _reserve,
-                              uint _amount) public returns (address, address, uint) {
-        /// flashLoan method call
-        lendingPool.flashLoan(_receiver, _reserve, _amount);
+    function studentflashLoan(uint _amount) public returns (bool) {
+        /// Hardcode more addresses here
+        address daiAddress = 0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD;
+
+        /// flashLoan method call 
+        lendingPool.flashLoan(address(this), daiAddress, _amount);
+        
+        return true;
     }
     
 
