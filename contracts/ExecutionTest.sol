@@ -36,14 +36,10 @@ contract ExecutionTest is PhStorage, AvConstants, PhOwnable {
     }
     
 
-
     // function flashLoanOperation(address _reserve, uint256 _amount, uint256 _fee) public returns (bool) {
     //     flashLoanReceiverExample.executeOperation(_reserve, _amount, _fee);
     // }
     
-
-
-
 
     /**
     * Enable usage of the DAI reserve as collateral for the user

@@ -34,18 +34,26 @@ class App extends Component {
 
     const { accounts, flash_loan_receiver_example, execution_test, web3 } = this.state;
 
+    console.log('=== accounts[0] ===', accounts[0]);
+
     const response_1 = await flash_loan_receiver_example.methods.testFunc().send({ from: accounts[0] })
     console.log('=== response of testFunc function ===', response_1);
+
+    // let _daiAddress = "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD"
+    // let _amount_2 = 100
+    // let _referral = 1
+    // const response_7 = await flash_loan_receiver_example.methods.studentDeposit(_daiAddress, _amount_2, _referral).send({ from: accounts[0] })
+    // console.log('=== response of studentDeposit function ===', response_7);    
 
     const response_4 = await execution_test.methods.getActiveReserves().call()
     console.log('=== response of getActiveReserves() function ===', response_4); // Success
 
-    // let _daiAddress = "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD"
-    // let _amount = 100
-    // let _referral = 1
-    // let _depositorAddress = accounts[0];
-    // const response_5 = await execution_test.methods.depositDAI().send({ from: _depositorAddress })
-    // console.log('=== response of depositDAI() function ===', response_5);        // Fail
+    // let _receiver_1 = accounts[0]
+    // let _reserve_1 = "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD"
+    // let _amount_1 = 0
+
+    // const response_6 = await flash_loan_receiver_example.methods.studentflashLoan(_receiver_1, _reserve_1, _amount_1).send({ from: accounts[0] })
+    // console.log('=== response of studentflashLoan function ===', response_6);
 
 
     let _reserve = "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD"
@@ -53,10 +61,14 @@ class App extends Component {
     let _fee = 0
 
     const response_2 = await flash_loan_receiver_example.methods.studentBorrow(_reserve, _amount, _fee).send({ from: accounts[0] })
-    console.log('=== response of studentBorrow function ===', response_2);
+    console.log('=== response of studentBorrow function ===', response_2);  // Successful
 
-    const response_3 = await flash_loan_receiver_example.methods.executeOperation(_reserve, _amount, _fee).send({ from: accounts[0] })
-    console.log('=== response of executeOperation function ===', response_3);
+    // let _daiAddress = "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD"
+    // let _amount = 100
+    // let _referral = 1
+    // let _depositorAddress = accounts[0];
+    // const response_5 = await execution_test.methods.depositDAI().send({ from: _depositorAddress })
+    // console.log('=== response of depositDAI() function ===', response_5);        // Fail
   }
 
 

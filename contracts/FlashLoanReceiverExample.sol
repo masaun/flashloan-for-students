@@ -2,6 +2,9 @@ pragma solidity ^0.5.0;
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
+import "./aave-protocol/contracts/lendingpool/LendingPool.sol";
+import "./aave-protocol/contracts/lendingpool/LendingPoolCore.sol";
+
 import "./aave-protocol/contracts/mocks/tokens/MintableERC20.sol";
 import "./aave-protocol/contracts/flashloan/base/FlashLoanReceiverBase.sol";
 import "./aave-protocol/contracts/configuration/LendingPoolAddressesProvider.sol";
@@ -17,15 +20,30 @@ contract FlashLoanReceiverExample is FlashLoanReceiverBase, PhStorage, AvConstan
 
     //bool private constant CONFIRMED = true;
 
+    /// Retrieve the LendingPool address
+    LendingPoolAddressesProvider provider;
+    LendingPool lendingPool;
+
     constructor(LendingPoolAddressesProvider _provider) FlashLoanReceiverBase(_provider) public {
-        // Nothing
+        provider = LendingPoolAddressesProvider(_provider);
+        lendingPool = LendingPool(_provider.getLendingPool());
+        address payable core = provider.getLendingPoolCore();
     }
 
 
-    function executeOperation(
-        address _reserve,
-        uint256 _amount,
-        uint256 _fee) public returns (uint256 returnedAmount) {
+
+
+    function studentflashLoan(address payable _receiver,
+                              address _reserve,
+                              uint _amount) public returns (address, address, uint) {
+        /// flashLoan method call
+        lendingPool.flashLoan(_receiver, _reserve, _amount);
+    }
+    
+
+    function executeOperation(address _reserve,
+                              uint256 _amount,
+                              uint256 _fee) public returns (uint256 returnedAmount) {
 
         //check the contract has the specified balance
         require(_amount <= getBalanceInternal(address(this), _reserve), 
@@ -34,7 +52,7 @@ contract FlashLoanReceiverExample is FlashLoanReceiverBase, PhStorage, AvConstan
         /**
 
         CUSTOM ACTION TO PERFORM WITH THE BORROWED LIQUIDITY
-
+    
         */
 
         transferFundsBackToPoolInternal(_reserve, _amount.add(_fee));
@@ -50,11 +68,11 @@ contract FlashLoanReceiverExample is FlashLoanReceiverBase, PhStorage, AvConstan
 
         _totalBorrowAmount = executeOperation(_reserve, _amount, _fee);
 
-        //emit StudentBorrow(_totalBorrowAmount);
+        emit StudentBorrow(_totalBorrowAmount);
 
         return _totalBorrowAmount;
     }
-    
+
 
     function testFunc() public returns (bool) {
         return AvConstants.CONFIRMED;
