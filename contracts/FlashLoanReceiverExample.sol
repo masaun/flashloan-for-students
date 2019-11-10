@@ -37,7 +37,7 @@ interface ILendingPool {
 
 contract Factory {
     /// Hardcode more addresses here
-    address daiAddress = 0x1c4a937d171752e1313D70fb16Ae2ea02f86303e;
+    address daiAddress = 0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD;
     event lendingPoolCalled(string eventCalled);
     
     // Function to called by webjs
