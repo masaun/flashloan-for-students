@@ -47,17 +47,64 @@ contract Factory {
         ILendingPool ilendingPool = ILendingPool(provider.getLendingPool());
 
         // Create child contract
-        FlashLoanReceiverExample loanContract = FlashLoanReceiverExample(0x9C6C63aA0cD4557d7aE6D9306C06C093A2e35408);
-        address flashLoanReceiverExampleAddress = address(loanContract);
+        FlashLoanHelper loanContract = new FlashLoanHelper(amount);
+        address helperAddress = address(loanContract);
 
         /// flashLoan method call 
-        ilendingPool.flashLoan(flashLoanReceiverExampleAddress, daiAddress, amount);
+        ilendingPool.flashLoan(helperAddress, daiAddress, amount);
         emit lendingPoolCalled("Lending pool called");
-        
         return true;
     }
+
+    // /// Hardcode more addresses here
+    // address daiAddress = 0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD;
+    // event lendingPoolCalled(string eventCalled);
+    
+    // // Function to called by webjs
+    // function setCircuit(uint256 amount) external returns (bool didSucceed) {
+    //     // Call flash loan, uses dai as base lending address provider
+    //     LendingPoolAddressesProvider provider = LendingPoolAddressesProvider(0x9C6C63aA0cD4557d7aE6D9306C06C093A2e35408);
+    //     ILendingPool ilendingPool = ILendingPool(provider.getLendingPool());
+
+    //     // Create child contract
+    //     FlashLoanReceiverExample loanContract = FlashLoanReceiverExample(0x9C6C63aA0cD4557d7aE6D9306C06C093A2e35408);
+    //     address flashLoanReceiverExampleAddress = address(loanContract);
+
+    //     /// flashLoan method call 
+    //     ilendingPool.flashLoan(flashLoanReceiverExampleAddress, daiAddress, amount);
+    //     emit lendingPoolCalled("Lending pool called");
+        
+    //     return true;
+    // }
 }
 
+
+contract FlashLoanHelper is IFlashLoanReceiver {
+    using SafeMath for uint256;
+    using SafeERC20 for IERC20;
+
+    uint256 feePercent;
+    address[] circuitToExecute;
+    event loanCalled(string called);
+
+    constructor(uint256 amount) public {
+        feePercent = amount;
+    }
+
+    function executeOperation(address _reserve, uint256 _amount, uint256 _fee) external returns (uint256 returnedAmount) {
+        // Execute trades
+        emit loanCalled("Flash loan executed.");
+        LendingPoolAddressesProvider addressesProvider = LendingPoolAddressesProvider(0x9C6C63aA0cD4557d7aE6D9306C06C093A2e35408);
+        address payable core = addressesProvider.getLendingPoolCore();
+        
+        // Executing the arbitrage contract, due to the variablility of rails contracts for uniswap and kyber respectively, we include a swapable interface in which to engage the arbitrage position
+        
+        // Transfer reserve (aDai), recipient is lending pool core.
+        uint256 feeAmt = _amount.add(_fee);
+        //IERC20(0x1c4a937d171752e1313D70fb16Ae2ea02f86303e).safeTransfer(core, feeAmt);
+        return _amount.add(_fee);
+    }
+}
 
 
 contract FlashLoanReceiverExample is FlashLoanReceiverBase, PhStorage, AvConstants {
