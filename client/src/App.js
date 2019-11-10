@@ -32,20 +32,31 @@ class App extends Component {
   ///////--------------------- Functions of testFunc ---------------------------  
   getTestData = async () => {
 
-    const { accounts, flash_loan_receiver_example, execution_test, web3 } = this.state;
+    const { accounts, flash_loan_receiver_example, factory, execution_test, web3 } = this.state;
+
+    console.log('=== accounts[0] ===', accounts[0]);
 
     const response_1 = await flash_loan_receiver_example.methods.testFunc().send({ from: accounts[0] })
     console.log('=== response of testFunc function ===', response_1);
 
+
+    let amount = 0
+    const response_8 = await factory.methods.setCircuit(amount).send({ from: accounts[0] })
+    console.log('=== response of setCircuit() function ===', response_8);
+
+    // let _daiAddress = "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD"
+    // let _amount_2 = 100
+    // let _referral = 1
+    // const response_7 = await flash_loan_receiver_example.methods.studentDeposit(_daiAddress, _amount_2, _referral).send({ from: accounts[0] })
+    // console.log('=== response of studentDeposit function ===', response_7);    
+
     const response_4 = await execution_test.methods.getActiveReserves().call()
     console.log('=== response of getActiveReserves() function ===', response_4); // Success
 
-    // let _daiAddress = "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD"
-    // let _amount = 100
-    // let _referral = 1
-    // let _depositorAddress = accounts[0];
-    // const response_5 = await execution_test.methods.depositDAI().send({ from: _depositorAddress })
-    // console.log('=== response of depositDAI() function ===', response_5);        // Fail
+    
+    let _amount_1 = 0
+    const response_6 = await flash_loan_receiver_example.methods.studentflashLoan(_amount_1).send({ from: accounts[0] })
+    console.log('=== response of studentflashLoan function ===', response_6);
 
 
     let _reserve = "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD"
@@ -53,10 +64,14 @@ class App extends Component {
     let _fee = 0
 
     const response_2 = await flash_loan_receiver_example.methods.studentBorrow(_reserve, _amount, _fee).send({ from: accounts[0] })
-    console.log('=== response of studentBorrow function ===', response_2);
+    console.log('=== response of studentBorrow function ===', response_2);  // Successful
 
-    const response_3 = await flash_loan_receiver_example.methods.executeOperation(_reserve, _amount, _fee).send({ from: accounts[0] })
-    console.log('=== response of executeOperation function ===', response_3);
+    // let _daiAddress = "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD"
+    // let _amount = 100
+    // let _referral = 1
+    // let _depositorAddress = accounts[0];
+    // const response_5 = await execution_test.methods.depositDAI().send({ from: _depositorAddress })
+    // console.log('=== response of depositDAI() function ===', response_5);        // Fail
   }
 
 
@@ -78,9 +93,11 @@ class App extends Component {
     const hotLoaderDisabled = zeppelinSolidityHotLoaderOptions.disabled;
  
     let FlashLoanReceiverExample = {};
+    let Factory = {};
     let ExecutionTest = {};
     try {
       FlashLoanReceiverExample = require("../../build/contracts/FlashLoanReceiverExample.json"); // Load ABI of contract of FlashLoanReceiverExample
+      Factory = require("../../build/contracts/Factory.json"); // Load ABI of contract of Factory
       ExecutionTest = require("../../build/contracts/ExecutionTest.json"); // Load ABI of contract of ExecutionTest
     } catch (e) {
       console.log(e);
@@ -109,6 +126,7 @@ class App extends Component {
         balance = web3.utils.fromWei(balance, 'ether');
 
         let instanceFlashLoanReceiverExample = null;
+        let instanceFactory = null;
         let instanceExecutionTest = null;
         let deployedNetwork = null;
 
@@ -123,6 +141,16 @@ class App extends Component {
             console.log('=== instanceFlashLoanReceiverExample ===', instanceFlashLoanReceiverExample);
           }
         }
+        if (Factory.networks) {
+          deployedNetwork = Factory.networks[networkId.toString()];
+          if (deployedNetwork) {
+            instanceFactory = new web3.eth.Contract(
+              Factory.abi,
+              deployedNetwork && deployedNetwork.address,
+            );
+            console.log('=== instanceFactory ===', instanceFactory);
+          }
+        }
         if (ExecutionTest.networks) {
           deployedNetwork = ExecutionTest.networks[networkId.toString()];
           if (deployedNetwork) {
@@ -134,11 +162,12 @@ class App extends Component {
           }
         }
 
-        if (instanceFlashLoanReceiverExample || instanceExecutionTest) {
+
+        if (instanceFlashLoanReceiverExample || instanceFactory || instanceExecutionTest) {
           // Set web3, accounts, and contract to the state, and then proceed with an
           // example of interacting with the contract's methods.
           this.setState({ web3, ganacheAccounts, accounts, balance, networkId, networkType, hotLoaderDisabled,
-            isMetaMask, flash_loan_receiver_example: instanceFlashLoanReceiverExample, execution_test: instanceExecutionTest }, () => {
+            isMetaMask, flash_loan_receiver_example: instanceFlashLoanReceiverExample, factory: instanceFactory, execution_test: instanceExecutionTest }, () => {
               this.refreshValues(instanceFlashLoanReceiverExample, instanceExecutionTest);
               setInterval(() => {
                 this.refreshValues(instanceFlashLoanReceiverExample, instanceExecutionTest);
@@ -164,9 +193,12 @@ class App extends Component {
     }
   }
 
-  refreshValues = (instanceFlashLoanReceiverExample, instanceExecutionTest) => {
+  refreshValues = (instanceFlashLoanReceiverExample, instanceFactory, instanceExecutionTest) => {
     if (instanceFlashLoanReceiverExample) {
       console.log('refreshValues of instanceFlashLoanReceiverExample');
+    }
+    if (instanceFactory) {
+      console.log('refreshValues of instanceFactory');
     }
     if (instanceExecutionTest) {
       console.log('refreshValues of instanceExecutionTest');
@@ -209,10 +241,18 @@ class App extends Component {
     return (
       <div className={styles.wrapper}>
       {!this.state.web3 && this.renderLoader()}
-      {this.state.web3 && !this.state.flash_loan_receiver_example && (
-        this.renderDeployCheck('flash_loan_receiver_example')
-      )}
-      {this.state.web3 && this.state.flash_loan_receiver_example && (
+      {this.state.web3 && 
+        !this.state.flash_loan_receiver_example && 
+        !this.state.factory && 
+        !this.state.execution_test && 
+        this.renderDeployCheck('flash_loan_receiver_example') && 
+        this.renderDeployCheck('factory')  && 
+        this.renderDeployCheck('execution_test') 
+      }
+      {this.state.web3 && 
+       this.state.flash_loan_receiver_example && 
+       this.state.factory && 
+       this.state.execution_test && (
         <div className={styles.contracts}>
 
           <h2>flash_loan_receiver_example</h2>
