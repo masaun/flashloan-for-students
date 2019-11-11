@@ -4,8 +4,12 @@ import "./CreateLoan.sol";
 import "./Msg.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
+import "./storage/AvStorage.sol";
+import "./storage/AvConstants.sol";
+import "./modifiers/AvOwnable.sol";
 
-contract CreateLoanExecutor is Msg {
+
+contract CreateLoanExecutor is Msg, AvStorage, AvConstants, AvOwnable {
     using SafeMath for uint256;
 
     address public lendingPoolAddr;

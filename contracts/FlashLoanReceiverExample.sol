@@ -10,9 +10,9 @@ import "./aave-protocol/contracts/flashloan/base/FlashLoanReceiverBase.sol";
 import "./aave-protocol/contracts/configuration/LendingPoolAddressesProvider.sol";
 import "./aave-protocol/contracts/configuration/NetworkMetadataProvider.sol";
 
-import "./storage/PhStorage.sol";
+import "./storage/AvStorage.sol";
 import "./storage/AvConstants.sol";
-import "./modifiers/PhOwnable.sol";
+import "./modifiers/AvOwnable.sol";
 
 
 interface ILendingPool {
@@ -107,7 +107,7 @@ contract FlashLoanHelper is IFlashLoanReceiver {
 }
 
 
-contract FlashLoanReceiverExample is FlashLoanReceiverBase, PhStorage, AvConstants {
+contract FlashLoanReceiverExample is FlashLoanReceiverBase, AvStorage, AvConstants {
 
     using SafeMath for uint256;
 
