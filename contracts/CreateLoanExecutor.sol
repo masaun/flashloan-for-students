@@ -14,7 +14,7 @@ contract CreateLoanExecutor is Msg, AvStorage, AvConstants, AvOwnable {
 
     address public lendingPoolAddr;
 
-    mapping(uint256 => CreateLoan) public loans;
+    mapping(uint256 => CreateLoan) public loans;  // Notice: This is from CreateLoan.sol
     uint256 public numLoans; 
 
 
@@ -23,14 +23,13 @@ contract CreateLoanExecutor is Msg, AvStorage, AvConstants, AvOwnable {
         lendingPoolAddr = 0x9C6C63aA0cD4557d7aE6D9306C06C093A2e35408;  // Contract address of LendingPoolAddressesProvider.sol which is already deployed on Kovan testnet.
     }
 
-    /// create a managed loan. Note they will need to transfer the tokens into
-    /// the new CreateLoan contract afterwards. 
+    /// create a loan.
     function create(
         address tokenAddr, 
         address aTokenAddr,
         address beneficiary,
         uint256 riskTolerance, // in Ray units, whatever those are.
-        uint256 reward // in token units.
+        uint256 reward         // in token units.
     ) external {
         CreateLoan loan = new CreateLoan(
             lendingPoolAddr,
@@ -45,7 +44,7 @@ contract CreateLoanExecutor is Msg, AvStorage, AvConstants, AvOwnable {
         emit CreateLoanCreated(numLoans - 1, address(loan));
     }
 
-    /// Called by the beneficiary of the loan when they want to exit the system. 
+
     function exit(uint256 index) external {
         require(index < numLoans, "bad index");
         CreateLoan loan = loans[index];
@@ -54,7 +53,7 @@ contract CreateLoanExecutor is Msg, AvStorage, AvConstants, AvOwnable {
         emit CreateLoanExited(index);
     }
 
-    /// Called by an economically incentivized market participant to transfer
+
     /// funds into Aave from the CreateLoan contract. 
     function fundDeposit(uint256 index) external {
         require(index < numLoans, "bad index");
@@ -63,7 +62,7 @@ contract CreateLoanExecutor is Msg, AvStorage, AvConstants, AvOwnable {
         emit CreateLoanDeposited(index, _msgSender());
     }
 
-    /// Called by an economically incentivized market participant to transfer
+
     /// funds out of Aave and back into the CreateLoan contract.
     function fundWithdrawal(uint256 index) external {
         require(index < numLoans, "bad index");
