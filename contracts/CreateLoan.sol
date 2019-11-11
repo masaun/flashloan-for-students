@@ -4,6 +4,10 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
+import "./storage/AvStorage.sol";
+import "./storage/AvConstants.sol";
+import "./modifiers/AvOwnable.sol";
+
 
 interface ILoanPool {
     function deposit(address, uint256, uint16) external;
@@ -23,7 +27,7 @@ interface IAToken {
 }
 
 
-contract CreateLoan is Ownable {
+contract CreateLoan is Ownable, AvStorage, AvConstants, AvOwnable {
     using SafeMath for uint256;
 
     ILoanPool public loanPool;
@@ -33,10 +37,6 @@ contract CreateLoan is Ownable {
     address public beneficiary;
     uint256 public liquidityRateThreshold; // in Ray units, whatever those are
     uint256 public reward; // in units of the token
-
-    event DepositedToAave(uint256 amount, address relayer);
-    event WithdrawnFromAave(uint256 amount, address relayer);
-    event Exited(uint256 amount);
 
     constructor(
         address _loanPool,
