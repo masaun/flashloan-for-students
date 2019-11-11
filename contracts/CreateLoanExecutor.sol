@@ -23,7 +23,6 @@ contract CreateLoanExecutor is Msg, AvStorage, AvConstants, AvOwnable {
         lendingPoolAddr = 0x9C6C63aA0cD4557d7aE6D9306C06C093A2e35408;  // Contract address of LendingPoolAddressesProvider.sol which is already deployed on Kovan testnet.
     }
 
-    /// Someone can call this function on behalf of a beneficiaryin order to 
     /// create a managed loan. Note they will need to transfer the tokens into
     /// the new CreateLoan contract afterwards. 
     function create(
