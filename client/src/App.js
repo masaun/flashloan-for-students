@@ -286,7 +286,7 @@ class App extends Component {
     );
   }
 
-  renderFlashLoanReceiverExample() {
+  renderFlashLoanForStudents() {
     return (
       <div className={styles.wrapper}>
       {!this.state.web3 && this.renderLoader()}
@@ -304,12 +304,12 @@ class App extends Component {
        this.state.execution_test && (
         <div className={styles.contracts}>
 
-          <h2>flash_loan_receiver_example</h2>
+          <h2>Flashloan for students</h2>
 
             <div className={styles.widgets}>
               <Card width={'30%'} bg="primary">
 
-                <h4>Flash Loan</h4>
+                <h4>Create Loan by using flashloan</h4>
 
                 <Image
                   alt="random unsplash image"
@@ -337,7 +337,7 @@ class App extends Component {
       <div className={styles.App}>
         <Header />
           {this.state.route === '' && this.renderInstructions()}
-          {this.state.route === 'flash_loan_receiver_example' && this.renderFlashLoanReceiverExample()}
+          {this.state.route === 'flash_loan_for_students' && this.renderFlashLoanForStudents()}
         <Footer />
       </div>
     );

@@ -9,8 +9,8 @@ const Header = () => (
 
         <li><a href="/" className={styles.link}> Home</a></li>
 
-        {process.env.NODE_ENV !== 'flash_loan_receiver_example' && (
-          <li><a href="/flash_loan_receiver_example" className={styles.link}> FlashLoanReceiverExample</a></li>
+        {process.env.NODE_ENV !== 'flash_loan_for_students' && (
+          <li><a href="/flash_loan_for_students" className={styles.link}> Flash Loan For Students</a></li>
         )}
 
       </ul>
