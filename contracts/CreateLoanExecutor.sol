@@ -17,10 +17,6 @@ contract CreateLoanExecutor is Msg, AvStorage, AvConstants, AvOwnable {
     mapping(uint256 => CreateLoan) public loans;
     uint256 public numLoans; 
 
-    event CreateLoanCreated(uint256 index, address addr);
-    event CreateLoanDeposited(uint256 index, address relayer);
-    event CreateLoanWithdrawn(uint256 index, address relayer);
-    event CreateLoanExited(uint256 index);
 
     constructor() public {
         // Kovan deployment of the lending pool.

@@ -34,10 +34,6 @@ contract CreateLoan is Ownable {
     uint256 public liquidityRateThreshold; // in Ray units, whatever those are
     uint256 public reward; // in units of the token
 
-    event DepositedToAave(uint256 amount, address relayer);
-    event WithdrawnFromAave(uint256 amount, address relayer);
-    event Exited(uint256 amount);
-
     constructor(
         address _loanPool,
         address _tokenAddr, 
