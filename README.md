@@ -1,14 +1,12 @@
-# NFT based Photo MarketPlace
+# Flashloan for students
+（Current state is in progress）
 
 ***
-
-## 【Introduction of NFT based Photo MarketPlace】
-- NFT based Photo MarketPlace is the peer-to-peer Marketplace for buy and sell of photos which was uploaded by users.
-- It assume that uploaded photos in this marketplace are used as photos of news article.
-- Even if user has smartphone which include function of camera, anyone can become sellers by uploading photos in this MarketPlace.
-  - It mean that if user who is seller live in poor region and doesn't has bank account and so on, they can earn money by selling photos in this marketplace.
-- All of being uploaded photos are tokenized as NFT（Non-Fungible token). 
-- Uploaded photos buy/sell by using DAI for preventing risk of high volatility of crypto currency.
+## 【Introduction of Flashloan for students】
+- Flashloan for students is a dApp which aims to solve problem of university students loan.
+- Main target uses of Flashloan for students are university students who want to student loan especially.
+- Borrower which are almost of university students are able to borrow and repay more efficiently than traditional way.
+  Also, Lender are able to lend more efficiently than traditional way.
 
 
 &nbsp;
@@ -17,18 +15,6 @@
 ***
 
 ## 【Setup】
-
-### Setup private network by using Ganache
-1. Download Ganache from link below  
-https://www.trufflesuite.com/ganache  
-
-
-2. Execute Ganache   
-
-&nbsp;
-
-
-
 ### Setup wallet by using Metamask
 1. Add MetaMask to browser (Chrome or FireFox or Opera or Brave)    
 https://metamask.io/  
@@ -36,7 +22,7 @@ https://metamask.io/
 
 2. Adjust appropriate newwork below 
 ```
-http://127.0.0.1:7545
+Kovan Test Network
 
 ```
 
@@ -44,11 +30,11 @@ http://127.0.0.1:7545
 
 
 ### Setup backend
-1. Deploy contracts to private network of Ganache
+1. Deploy contracts to Kovan Test Network
 ```
 (root directory)
 
-$ npm run migrate
+$ npm run migrate:kovan
 ```
 
 &nbsp;
@@ -78,9 +64,15 @@ http://127.0.0.1:3000
 ***
 
 ## 【References】
-- Gitcoin（The Road to Devcon5）
-https://gitcoin.co/issue/ConsenSys/Road-To-Devcon-Relay/2
-https://gitcoin.co/issue/ConsenSys/ConsenSysGrants-Challenges/5/3497
+- Gitcoin Web3 World Hackathon（part of AAVE）
+https://gitcoin.co/issue/aave/aave-gitcoin-hackaton-2019/2/3599
 
-- Documents
+- Documents of AAVE protocol
+https://developers.aave.com/#what-is-aave
 
+- AAVE testnet on Kovan
+https://testnet.aave.com/
+
+- Discord related to AAVE protocol
+https://discordapp.com/channels/562828676480237578/636630689936048132
+https://discordapp.com/channels/602826299974877205/636902500041228309
