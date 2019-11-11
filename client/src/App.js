@@ -32,7 +32,7 @@ class App extends Component {
   ///////--------------------- Functions of testFunc ---------------------------  
   getTestData = async () => {
 
-    const { accounts, flash_loan_receiver_example, factory, execution_test, web3 } = this.state;
+    const { accounts, flash_loan_receiver_example, factory, execution_test, create_loan_executor, web3 } = this.state;
 
     console.log('=== accounts[0] ===', accounts[0]);
 
@@ -40,9 +40,18 @@ class App extends Component {
     console.log('=== response of testFunc function ===', response_1);
 
 
-    let amount = 0
-    const response_8 = await factory.methods.setCircuit(amount).send({ from: accounts[0] })
-    console.log('=== response of setCircuit() function ===', response_8);
+    let tokenAddr = '0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD'    // DAI@kovan
+    let aTokenAddr = '0x8Ac14CE57A87A07A2F13c1797EfEEE8C0F8F571A'   // aDAI@kovan
+    let beneficiary = accounts[0]
+    let riskTolerance = 1  // in Ray units, whatever those are.
+    let reward = 100       // in token units.
+    const response_9 = await create_loan_executor.methods.create(tokenAddr, 
+                                                                 aTokenAddr, 
+                                                                 beneficiary, 
+                                                                 riskTolerance, 
+                                                                 reward).send({ from: accounts[0] })
+    console.log('=== response of create() function ===', response_9);
+
 
     // let _daiAddress = "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD"
     // let _amount_2 = 100
@@ -72,6 +81,11 @@ class App extends Component {
     // let _depositorAddress = accounts[0];
     // const response_5 = await execution_test.methods.depositDAI().send({ from: _depositorAddress })
     // console.log('=== response of depositDAI() function ===', response_5);        // Fail
+
+
+    let amount = 0
+    const response_8 = await factory.methods.setCircuit(amount).send({ from: accounts[0] })  // Fail
+    console.log('=== response of setCircuit() function ===', response_8);
   }
 
 
@@ -95,10 +109,12 @@ class App extends Component {
     let FlashLoanReceiverExample = {};
     let Factory = {};
     let ExecutionTest = {};
+    let CreateLoanExecutor = {};
     try {
       FlashLoanReceiverExample = require("../../build/contracts/FlashLoanReceiverExample.json"); // Load ABI of contract of FlashLoanReceiverExample
       Factory = require("../../build/contracts/Factory.json"); // Load ABI of contract of Factory
       ExecutionTest = require("../../build/contracts/ExecutionTest.json"); // Load ABI of contract of ExecutionTest
+      CreateLoanExecutor = require("../../build/contracts/CreateLoanExecutor.json"); // Load ABI of contract of CreateLoanExecutor
     } catch (e) {
       console.log(e);
     }
@@ -128,6 +144,7 @@ class App extends Component {
         let instanceFlashLoanReceiverExample = null;
         let instanceFactory = null;
         let instanceExecutionTest = null;
+        let instanceCreateLoanExecutor = null;
         let deployedNetwork = null;
 
         // Create instance of contracts
@@ -161,18 +178,47 @@ class App extends Component {
             console.log('=== instanceExecutionTest ===', instanceExecutionTest);
           }
         }
+        if (CreateLoanExecutor.networks) {
+          deployedNetwork = CreateLoanExecutor.networks[networkId.toString()];
+          if (deployedNetwork) {
+            instanceCreateLoanExecutor = new web3.eth.Contract(
+              CreateLoanExecutor.abi,
+              deployedNetwork && deployedNetwork.address,
+            );
+            console.log('=== instanceCreateLoanExecutor ===', instanceCreateLoanExecutor);
+          }
+        }
 
-
-        if (instanceFlashLoanReceiverExample || instanceFactory || instanceExecutionTest) {
+        if (instanceFlashLoanReceiverExample || instanceFactory || instanceExecutionTest || instanceCreateLoanExecutor) {
           // Set web3, accounts, and contract to the state, and then proceed with an
           // example of interacting with the contract's methods.
-          this.setState({ web3, ganacheAccounts, accounts, balance, networkId, networkType, hotLoaderDisabled,
-            isMetaMask, flash_loan_receiver_example: instanceFlashLoanReceiverExample, factory: instanceFactory, execution_test: instanceExecutionTest }, () => {
-              this.refreshValues(instanceFlashLoanReceiverExample, instanceExecutionTest);
-              setInterval(() => {
-                this.refreshValues(instanceFlashLoanReceiverExample, instanceExecutionTest);
-              }, 5000);
-            });
+          this.setState({ 
+            web3, 
+            ganacheAccounts, 
+            accounts, 
+            balance, 
+            networkId, 
+            networkType, 
+            hotLoaderDisabled,
+            isMetaMask, 
+            flash_loan_receiver_example: instanceFlashLoanReceiverExample, 
+            factory: instanceFactory, 
+            execution_test: instanceExecutionTest, 
+            create_loan_executor: instanceCreateLoanExecutor 
+          }, () => {
+            this.refreshValues(
+              instanceFlashLoanReceiverExample, 
+              instanceFactory, 
+              instanceExecutionTest, 
+              instanceCreateLoanExecutor
+            );
+            setInterval(() => {
+              this.refreshValues(instanceFlashLoanReceiverExample, 
+                                 instanceFactory, 
+                                 instanceExecutionTest, 
+                                 instanceCreateLoanExecutor);
+            }, 5000);
+          });
         }
         else {
           this.setState({ web3, ganacheAccounts, accounts, balance, networkId, networkType, hotLoaderDisabled, isMetaMask });
@@ -199,6 +245,9 @@ class App extends Component {
     }
     if (instanceFactory) {
       console.log('refreshValues of instanceFactory');
+    }
+    if (instanceExecutionTest) {
+      console.log('refreshValues of instanceExecutionTest');
     }
     if (instanceExecutionTest) {
       console.log('refreshValues of instanceExecutionTest');
