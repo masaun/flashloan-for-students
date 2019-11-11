@@ -3,7 +3,7 @@ pragma solidity ^0.5.0;
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 
-contract PhOwnable is Ownable {
+contract AvOwnable is Ownable {
 
     // example
     modifier onlyStakingPerson(uint _time) { 

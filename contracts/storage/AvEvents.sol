@@ -1,16 +1,10 @@
 pragma solidity ^0.5.0;
 
 
-contract PhEvents {
+contract AvEvents {
 
     event StudentBorrow(
         uint256 totalBorrowAmount
-    );
-    
-
-    event AddReputation (
-        uint256 tokenId,
-        uint256 reputationCount
     );
 
     event ExampleEvent (
