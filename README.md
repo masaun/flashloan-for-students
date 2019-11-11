@@ -5,8 +5,8 @@
 ## 【Introduction of Flashloan for students】
 - Flashloan for students is a dApp which aims to solve problem of university students loan.
 - Main target uses of Flashloan for students are university students who want to student loan especially.
-- Borrower which are almost of university students are able to borrow and repay more efficiently than traditional way.
-  Also, Lender are able to lend more efficiently than traditional way.
+- Borrower which are almost of university students are able to borrow and repay more efficiently than traditional way by using flashloan and aToken.
+  Also, Lender are able to lend more efficiently than traditional way by using flashloan and aToken.
 
 
 &nbsp;
