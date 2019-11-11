@@ -66,9 +66,13 @@ http://127.0.0.1:3000
 ## 【References】
 - Gitcoin Web3 World Hackathon（part of AAVE）
 https://gitcoin.co/issue/aave/aave-gitcoin-hackaton-2019/2/3599
+https://gitcoin.co/issue/aave/aave-gitcoin-hackaton-2019/3/3600
 
 - Documents of AAVE protocol
 https://developers.aave.com/#what-is-aave
+
+- Github repos of AAVE protocol
+https://github.com/aave/aave-protocol
 
 - AAVE testnet on Kovan
 https://testnet.aave.com/
