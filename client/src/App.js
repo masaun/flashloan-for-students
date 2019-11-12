@@ -50,7 +50,19 @@ class App extends Component {
                                                                  beneficiary, 
                                                                  riskTolerance, 
                                                                  reward).send({ from: accounts[0] })
-    console.log('=== response of create() function ===', response_9);
+    console.log('=== response of create() function ===', response_9);  // Successful
+
+    let index_3 = 5
+    const response_12 = await create_loan_executor.methods.exit(index_3).send({ from: accounts[0] })
+    console.log('=== response of exit() function ===', response_12);       // Fail
+
+    let index_1 = 5
+    const response_10 = await create_loan_executor.methods.fundDeposit(index_1).send({ from: accounts[0] })
+    console.log('=== response of fundDeposit() function ===', response_10);       // Fail
+
+    let index_2 = 5
+    const response_11 = await create_loan_executor.methods.fundWithdrawal(index_2).send({ from: accounts[0] })
+    console.log('=== response of fundWithdrawal() function ===', response_11);    // Fail
 
 
     // let _daiAddress = "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD"
